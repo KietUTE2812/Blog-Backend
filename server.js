@@ -33,7 +33,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors(
     {
-        origin: 'http://localhost:2112',
+        origin: process.env.FRONTEND_URL,
         credentials: true,
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
         allowedHeaders: ['Content-Type', 'Authorization'],
@@ -42,7 +42,7 @@ app.use(cors(
         optionsSuccessStatus: 204,
         maxAge: 86400,
         credentials: true,
-        origin: 'http://localhost:2112',
+        origin: process.env.FRONTEND_URL,
     }
 ));
 app.use(accessLog); // Log tất cả request
@@ -92,6 +92,7 @@ dbConnect();
 // Create logs folder if not exists
 if (!fs.existsSync('logs')) {
     fs.mkdirSync('logs');
+    fs.writeFileSync('logs/access.log', '');
 }
 
 app.listen(PORT, () => {
