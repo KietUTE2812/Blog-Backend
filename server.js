@@ -9,6 +9,7 @@ const response = require('./config/response');
 const { accessLog } = require('./config/accessLog');
 const session = require('express-session');
 const passport = require('./service/googleAuth');
+const fs = require('fs');
 require('dotenv').config();
 
 const authRoutes = require('./routes/auth');
@@ -87,6 +88,11 @@ app.use('*', (req, res) => {
 
 // Connect to MongoDB
 dbConnect();
+
+// Create logs folder if not exists
+if (!fs.existsSync('logs')) {
+    fs.mkdirSync('logs');
+}
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
