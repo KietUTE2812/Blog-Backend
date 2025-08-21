@@ -78,6 +78,7 @@ const getPostBySlug = handleAsync(async (req, res) => {
 
     const post = await Post.findOne(query)
         .populate('author', 'username fullName avatar bio')
+        .populate('category', 'name slug')
         .select('-__v');
 
     if (!post) {

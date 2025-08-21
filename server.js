@@ -18,6 +18,7 @@ const userRoutes = require('./routes/users');
 const commentRoutes = require('./routes/comments');
 const categoryRoutes = require('./routes/category');
 const contactRoutes = require('./routes/contact');
+const imageRoutes = require('./routes/image');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -63,8 +64,8 @@ app.use('/api/posts', postRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/categories', categoryRoutes);
-
 app.use('/api/contact', contactRoutes);
+app.use('/api/images', imageRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

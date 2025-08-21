@@ -2,6 +2,7 @@ const express = require('express');
 const { body } = require('express-validator');
 const { validate } = require('../middleware/validation');
 const { auth } = require('../middleware/auth');
+const passport = require('../service/googleAuth');
 const { register, login, getMe, updateProfile, changePassword, googleLogin, googleCallback, logout } = require('../controller/authController');
 
 const router = express.Router();
@@ -43,13 +44,11 @@ router.post('/register', registerValidation, validate, register);
 // Login
 router.post('/login', loginValidation, validate, login);
 
+// Google callback
+router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), googleCallback);
+
 // Google login
 router.get('/google', googleLogin);
-
-// Google callback
-router.get('/google/callback', googleCallback);
-
-
 
 // Get current user
 router.get('/me', auth, getMe);
@@ -79,6 +78,6 @@ router.put('/change-password', auth, [
 ], validate, changePassword);
 
 // Logout
-router.post('/logout', auth, logout );
+router.post('/logout', auth, logout);
 
 module.exports = router; 

@@ -26,7 +26,6 @@ const getCommentsForPost = handleAsync(async (req, res) => {
 
     // Only show approved comments for non-authenticated users
     if (!req.user || req.user.role !== 'admin') {
-        query.isApproved = true;
         query.isSpam = false;
     }
 

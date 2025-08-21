@@ -15,10 +15,12 @@ passport.use(new GoogleStrategy({
             if (!user) {
                 const newUser = new User({
                     email: profile.emails[0].value,
+                    username: profile.displayName,
                     fullName: profile.displayName,
                     avatar: profile.photos[0].value,
                     password: profile.id,
-                    role: 'user'
+                    role: 'user',
+                    googleId: profile.id
                 });
                 await newUser.save();
                 return done(null, newUser);

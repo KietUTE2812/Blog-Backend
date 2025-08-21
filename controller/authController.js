@@ -89,12 +89,32 @@ const login = handleAsync(async (req, res) => {
     response(res, 200, 'Login successful', { token, user });
 });
 
-const googleLogin = handleAsync(async (req, res) => {
+const googleLogin = handleAsync(async (req, res, next) => {
     passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
 });
 
 const googleCallback = handleAsync(async (req, res) => {
-    passport.authenticate('google', { successRedirect: '/', failureRedirect: '/login' })(req, res, next);
+    const user = req.user;
+    if (!user) {
+        return res.redirect('/login');
+    }
+
+    const token = jwt.sign(
+        { userId: user._id },
+        process.env.JWT_SECRET,
+        { expiresIn: process.env.JWT_EXPIRE || '7d' }
+    );
+
+    const encodedUser = encodeURIComponent(JSON.stringify({
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        fullName: user.fullName,
+        avatar: user.avatar,
+        role: user.role
+    }));
+
+    return res.redirect(`${process.env.FRONTEND_URL}/login/success?token=${token}&user=${encodedUser}`);
 });
 
 const getMe = handleAsync(async (req, res) => {

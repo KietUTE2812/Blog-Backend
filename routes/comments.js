@@ -23,11 +23,7 @@ const createCommentValidation = [
         .trim(),
     body('postId')
         .isMongoId()
-        .withMessage('Valid post ID is required'),
-    body('parentCommentId')
-        .optional()
-        .isMongoId()
-        .withMessage('Valid parent comment ID is required')
+        .withMessage('Valid post ID is required')
 ];
 
 // Update comment validation
