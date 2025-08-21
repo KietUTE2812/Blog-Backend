@@ -2,6 +2,7 @@ const morgan = require('morgan');
 const fs = require('fs');
 
 const accessLog = morgan('combined', {
+
     stream: {
         write: (message) => {
             console.log(message);
